@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth") // Specify base URL for all methods in this controller
+@RequestMapping("/auth")
 public class AuthController {
 
     @Autowired
