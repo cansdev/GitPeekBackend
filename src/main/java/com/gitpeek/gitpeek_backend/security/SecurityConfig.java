@@ -1,4 +1,3 @@
-//SecurityConfig.java:
 package com.gitpeek.gitpeek_backend.security;
 
 import org.springframework.context.annotation.Bean;
@@ -31,8 +30,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration configuration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
 
@@ -40,11 +38,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/auth/signin", "/auth/register"))
+                        .ignoringRequestMatchers("/auth/signin", "/auth/register", "/bookmarks/**")
+                )
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
-                        .requestMatchers("/auth/signin").permitAll()
-                        .requestMatchers("/auth/register").permitAll()
+                        .requestMatchers("/auth/signin", "/auth/register").permitAll()
+                        .requestMatchers("/bookmarks/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(formLogin -> formLogin
