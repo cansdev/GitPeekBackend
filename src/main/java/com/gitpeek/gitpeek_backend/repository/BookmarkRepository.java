@@ -8,5 +8,6 @@ import java.util.Optional;
 
 public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
     List<Bookmark> findByUserId(Long userId);
+    //Foreign keys in MySQL for each userId to have a reference to a user id in "users"
     Optional<Bookmark> findByUserIdAndRepositoryId(Long userId, Long repositoryId);
 }
