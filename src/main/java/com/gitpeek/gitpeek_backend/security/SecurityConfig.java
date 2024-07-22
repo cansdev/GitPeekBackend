@@ -1,3 +1,4 @@
+//SecurityConfig.java:
 package com.gitpeek.gitpeek_backend.security;
 
 import org.springframework.context.annotation.Bean;

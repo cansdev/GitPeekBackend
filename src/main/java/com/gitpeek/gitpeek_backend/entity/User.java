@@ -1,3 +1,4 @@
+//User.java:
 package com.gitpeek.gitpeek_backend.entity;
 
 import jakarta.persistence.*;
