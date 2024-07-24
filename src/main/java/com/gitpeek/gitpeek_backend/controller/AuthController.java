@@ -23,6 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import lombok.Data;
+
+@Data
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -40,7 +43,7 @@ public class AuthController {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            loginDto.getUsernameOrId(),
+                            loginDto.getUsername(),
                             loginDto.getPassword()
                     )
             );

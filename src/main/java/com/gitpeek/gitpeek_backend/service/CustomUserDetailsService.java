@@ -24,17 +24,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String usernameOrId) throws UsernameNotFoundException {
-        User user;
-
-        try {
-            Long id = Long.parseLong(usernameOrId);
-            user = userRepository.findById(id)
-                    .orElseThrow(() -> new UsernameNotFoundException("User not found with ID: " + usernameOrId));
-        } catch (NumberFormatException e) {
-            user = userRepository.findByUsername(usernameOrId)
-                    .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + usernameOrId));
-        }
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
 
         Set<GrantedAuthority> authorities = Collections.emptySet();
 
