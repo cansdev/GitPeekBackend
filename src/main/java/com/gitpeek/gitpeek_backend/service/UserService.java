@@ -22,6 +22,11 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+
     public void registerUser(String username, String password) {
         LOGGER.log(Level.INFO, "Attempting to register user with username: {0}", username);
 

@@ -28,7 +28,7 @@ public class BookmarkController {
                 bookmarkRequest.getStars(),
                 bookmarkRequest.getDescription()
         );
-        ResponseDto response = new ResponseDto("Bookmark added successfully!", HttpStatus.CREATED.value());
+        ResponseDto response = new ResponseDto("Bookmark added successfully!");
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
@@ -42,10 +42,10 @@ public class BookmarkController {
     public ResponseEntity<ResponseDto> getBookmark(@PathVariable Long userId, @PathVariable Long repositoryId) {
         Optional<Bookmark> bookmark = bookmarkService.getBookmark(userId, repositoryId);
         if (bookmark.isPresent()) {
-            ResponseDto response = new ResponseDto("Bookmark found!", HttpStatus.OK.value());
+            ResponseDto response = new ResponseDto("Bookmark found!");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
-            ResponseDto response = new ResponseDto("Bookmark not found!", HttpStatus.NOT_FOUND.value());
+            ResponseDto response = new ResponseDto("Bookmark not found!");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
@@ -53,7 +53,7 @@ public class BookmarkController {
     @DeleteMapping("/{userId}/{repositoryId}")
     public ResponseEntity<ResponseDto> deleteBookmark(@PathVariable Long userId, @PathVariable Long repositoryId) {
         bookmarkService.deleteBookmark(userId, repositoryId);
-        ResponseDto response = new ResponseDto("Bookmark deleted successfully!", HttpStatus.OK.value());
+        ResponseDto response = new ResponseDto("Bookmark deleted successfully!");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

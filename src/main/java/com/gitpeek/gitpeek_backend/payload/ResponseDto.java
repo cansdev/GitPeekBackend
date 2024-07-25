@@ -1,12 +1,26 @@
-//ResponseDto.java:
 package com.gitpeek.gitpeek_backend.payload;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
 public class ResponseDto {
+
     private String message;
-    private int statusCode;
+    private int status;
+    private Object data;
+
+    public ResponseDto(String message, int status) {
+        this.message = message;
+        this.status = status;
+    }
+
+    public ResponseDto(String message, int status, Object data) {
+        this.message = message;
+        this.status = status;
+        this.data = data;
+    }
+
+    public ResponseDto(String message) {
+        this.message = message;
+    }
 }

@@ -1,8 +1,10 @@
 package com.gitpeek.gitpeek_backend.controller;
 
+import com.gitpeek.gitpeek_backend.entity.User;
 import com.gitpeek.gitpeek_backend.payload.LoginDto;
 import com.gitpeek.gitpeek_backend.payload.RegisterDto;
 import com.gitpeek.gitpeek_backend.payload.ResponseDto;
+import com.gitpeek.gitpeek_backend.repository.UserRepository;
 import com.gitpeek.gitpeek_backend.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -49,8 +53,18 @@ public class AuthController {
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            ResponseDto responseMessage = new ResponseDto("User signed in successfully!", HttpStatus.OK.value());
-            return new ResponseEntity<>(responseMessage, HttpStatus.OK);
+            // Retrieve the authenticated user
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            Optional<User> optionalUser = userService.findByUsername(userDetails.getUsername());
+
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
+                // Return the userId along with the response
+                ResponseDto responseMessage = new ResponseDto("User signed in successfully!", HttpStatus.OK.value(), user.getId());
+                return new ResponseEntity<>(responseMessage, HttpStatus.OK);
+            } else {
+                throw new UsernameNotFoundException("User not found");
+            }
         } catch (UsernameNotFoundException | BadCredentialsException e) {
             LOGGER.log(Level.SEVERE, "Authentication failed", e);
             ResponseDto responseMessage = new ResponseDto("Invalid username or password", HttpStatus.UNAUTHORIZED.value());
@@ -61,6 +75,7 @@ public class AuthController {
             return new ResponseEntity<>(responseMessage, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     @PostMapping("/register")
     public ResponseEntity<ResponseDto> registerUser(@RequestBody RegisterDto registerDto) {
@@ -78,6 +93,7 @@ public class AuthController {
             return new ResponseEntity<>(responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ResponseDto> handleException(Exception e) {
