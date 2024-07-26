@@ -28,6 +28,9 @@ public class Bookmark {
     @Column
     private String description;
 
+    @Column
+    private String name;
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();

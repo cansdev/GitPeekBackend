@@ -15,12 +15,13 @@ public class BookmarkService {
         this.bookmarkRepository = bookmarkRepository;
     }
 
-    public Bookmark addBookmark(Long userId, Long repositoryId, Integer stars, String description) {
+    public Bookmark addBookmark(Long userId, Long repositoryId, Integer stars, String description, String name) {
         Bookmark bookmark = new Bookmark();
         bookmark.setUserId(userId);
         bookmark.setRepositoryId(repositoryId);
         bookmark.setStars(stars);
         bookmark.setDescription(description);
+        bookmark.setName(name);
         return bookmarkRepository.save(bookmark);
     }
 

@@ -26,7 +26,8 @@ public class BookmarkController {
                 bookmarkRequest.getUserId(),
                 bookmarkRequest.getRepositoryId(),
                 bookmarkRequest.getStars(),
-                bookmarkRequest.getDescription()
+                bookmarkRequest.getDescription(),
+                bookmarkRequest.getName()
         );
         ResponseDto response = new ResponseDto("Bookmark added successfully!");
         return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -64,5 +65,6 @@ public class BookmarkController {
         private Long repositoryId;
         private Integer stars;
         private String description;
+        private String name;
     }
 }
