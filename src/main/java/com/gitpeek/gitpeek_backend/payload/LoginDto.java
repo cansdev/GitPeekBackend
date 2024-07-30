@@ -9,4 +9,3 @@ public class LoginDto {
         private String password;
 }
 
-
