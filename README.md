@@ -1,6 +1,6 @@
 # GitPeekBackend
 
-This is the backend service for the GitPeek app, developed using Spring Boot. It connects to a MySQL database to store bookmark and user data persistently.
+GitPeekBackend is the backend service for the GitPeek application, developed using Spring Boot. It connects to a MySQL database to store and manage bookmark and user data persistently.
 
 ## Features
 
@@ -10,58 +10,93 @@ This is the backend service for the GitPeek app, developed using Spring Boot. It
 
 ## Technologies Used
 
-- **Spring Boot**: Backend framework.
-- **MySQL**: Database for persistent data storage.
-- **Hibernate**: ORM for database operations.
+- **Spring Boot**: Backend framework for creating the RESTful API.
+- **MySQL**: Relational database for persistent data storage.
+- **Hibernate**: ORM tool for database operations.
 
-## Getting Started
+## Model-View-Controller (MVC) Diagram
 
-### Prerequisites
+<img width="1244" alt="image" src="https://github.com/user-attachments/assets/e564c8e5-bc17-4865-b5e9-b821c5bfa8ce">
 
-- Java 8 or higher
-- MySQL
-- Maven
+## Important Notice
 
-### Installation
+**Security Alert:** Earlier commits in this repository may contain sensitive information, including an SQL password. Please be aware that this password has since been changed, and the old database is no longer in use. To ensure your application’s security and proper functionality, please set up your own MySQL instance and configure it as described below.
 
-1. Clone the repository:
+## Setting Up Your MySQL Database
 
-    ```bash
-    git clone https://github.com/cans4/GitPeekBackend.git
-    cd GitPeekBackend
-    ```
+1. **Install MySQL:**
+   If you don't already have MySQL installed, download and install it from the [official MySQL website](https://dev.mysql.com/downloads/).
 
-2. Update application properties:
+2. **Create a Database:**
+   Open a terminal or command prompt and log into MySQL using the following command:
+   
+   `mysql -u root -p`
+   
+   After entering your root password, create a new database for the application:
+   
+   `CREATE DATABASE gitpeek_backend_db;`
 
-    Configure the database connection and other settings using environment variables.
+3. **Create a Database User:**
+   You may want to create a dedicated user for your application:
+   
+   `CREATE USER 'gitpeek_user'@'localhost' IDENTIFIED BY 'your_password';`
+   
+   Grant privileges to the user:
+   
+   `GRANT ALL PRIVILEGES ON gitpeek_backend_db.* TO 'gitpeek_user'@'localhost';`
+   
+   Apply the changes:
+   
+   `FLUSH PRIVILEGES;`
 
-    ```properties
-    spring.datasource.url=${DB_URL}
-    spring.datasource.username=${DB_USERNAME}
-    spring.datasource.password=${DB_PASSWORD}
-    ```
+4. **Update Application Configuration:**
+   Configure the application to connect to your new MySQL instance. Set the following environment variables or directly update the `application.properties` file:
+   
+   `spring.datasource.url=jdbc:mysql://localhost:3306/gitpeek_backend_db`
+   
+   `spring.datasource.username=gitpeek_user`
+   
+   `spring.datasource.password=your_password`
 
-3. Build the project:
+   Alternatively, you can set the environment variables:
+   - `DB_URL`: Database URL (e.g., `jdbc:mysql://localhost:3306/gitpeek_backend_db`)
+   - `DB_USERNAME`: Database username (e.g., `gitpeek_user`)
+   - `DB_PASSWORD`: Database password (e.g., `your_password`)
 
-    ```bash
-    mvn clean install
-    ```
+5. **Build and Run the Application:**
+   Follow these steps to build and run the application:
+   
+   `git clone https://github.com/cans4/GitPeekBackend.git`
+   
+   `cd GitPeekBackend`
+   
+   `mvn clean install`
+   
+   `mvn spring-boot:run`
 
-4. Run the application:
+   The application will use JPA/Hibernate to automatically create the required database tables based on the entity classes provided in the project.
 
-    ```bash
-    mvn spring-boot:run
-    ```
+## Entity Classes Overview
 
-## Environment Variables
+### `Bookmark` Entity
+- **Table Name:** `bookmarks`
+- **Columns:**
+  - `id` (Primary Key, Auto-generated)
+  - `repository_id` (Long, Not Null)
+  - `user_id` (Long, Not Null)
+  - `created_at` (LocalDateTime, Not Null, Automatically Set)
+  - `stars` (Integer)
+  - `description` (String)
+  - `name` (String)
 
-Set the following environment variables to configure the application:
-
-- `DB_URL`: Database URL (e.g., `jdbc:mysql://localhost:3306/gitpeek_backend_db`)
-- `DB_USERNAME`: Database username
-- `DB_PASSWORD`: Database password
+### `User` Entity
+- **Table Name:** `users`
+- **Columns:**
+  - `id` (Primary Key, Auto-generated)
+  - `username` (String, Not Null, Unique)
+  - `password` (String, Not Null)
+  - `created_at` (LocalDateTime, Not Null, Automatically Set)
 
 ## License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
-
